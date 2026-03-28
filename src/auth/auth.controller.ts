@@ -30,10 +30,10 @@ export class AuthController {
   @HttpCode(200)
   @Post('register')
   async register(@Body() dto: AuthDto,  @Res({passthrough: true}) res: Response){
-    const {refreshToken, ...response} = await this.authService.login(dto)
-    this.authService.addRefreshTokenToResponse(res, refreshToken)
+    const { refreshToken, ...response } = await this.authService.register(dto);
+    this.authService.addRefreshTokenToResponse(res, refreshToken);
 
-    return response
+    return response;
   }
 
   @HttpCode(200)
