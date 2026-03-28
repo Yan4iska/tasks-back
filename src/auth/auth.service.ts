@@ -78,11 +78,13 @@ export class AuthService {
 		const expiresIn = new Date()
 		expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN)
 
+		const isProd = process.env.NODE_ENV === 'production'
+		// Cross-origin front (e.g. Vercel) → API (e.g. Render): SameSite=None + Secure
 		res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
 			httpOnly: true,
 			expires: expiresIn,
-			secure: false,
-			sameSite: 'lax'
+			secure: isProd,
+			sameSite: isProd ? 'none' : 'lax',
 		})
 	}
 
@@ -90,11 +92,12 @@ export class AuthService {
 		const expiresIn = new Date()
 		expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN)
 
+		const isProd = process.env.NODE_ENV === 'production'
 		res.cookie(this.REFRESH_TOKEN_NAME, '', {
 			httpOnly: true,
 			expires: new Date(0),
-			secure: false,
-			sameSite: 'lax'
+			secure: isProd,
+			sameSite: isProd ? 'none' : 'lax',
 		})
 	}
 }
